@@ -1,0 +1,16 @@
+@startuml session-store
+
+entity "User" as user {
+  * username
+}
+
+entity "Session" as session {
+  * SessionToken (PK)
+  * CreatedAt
+  * ExpiresAt
+  * TTL
+}
+
+user ||..|{ session
+
+@enduml

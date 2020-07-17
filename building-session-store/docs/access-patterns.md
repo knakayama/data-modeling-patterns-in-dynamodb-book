@@ -1,0 +1,4 @@
+- Create Session
+- Get Session
+- Delete Session (time-based)
+- Delete Sessions for User (manual revocation)
