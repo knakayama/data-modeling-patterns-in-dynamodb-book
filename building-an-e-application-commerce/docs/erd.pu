@@ -1,0 +1,12 @@
+@startuml session-store
+
+entity "Customers" as Customers
+entity "Addresses" as Addresses
+entity "Orders" as Orders
+entity "OrderItems" as OrderItems
+
+Customers ||..|{ Addresses
+Customers ||..|{ Orders
+Orders ||..|{ OrderItems
+
+@enduml
