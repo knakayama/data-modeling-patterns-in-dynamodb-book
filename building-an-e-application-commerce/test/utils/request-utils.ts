@@ -1,26 +1,50 @@
 import { Chance } from 'chance'
-import { UserRequest } from '@externals/drivers/database/customer-interfaces'
+import { Address } from '@externals/drivers/database/address'
+import { Customer } from '@externals/drivers/database/customer'
 
 const chance: Chance.Chance = new Chance()
 
 export class RequestUtils {
   static generateUserName(): string {
-    return chance.string({ pool: 'abcde1234-' })
-  }
+    return chance.name().split(' ').join('').toLowerCase()
+}
 
   static generateName(): string {
-    return chance.string({ pool: 'abcde1234-' })
+    return chance.name()
   }
 
   static generateEmailAddress(): string {
     return chance.email()
   }
 
-  static generateUserRequest(): UserRequest {
+  static generateAddress(withBusiness: boolean): Address {
+    const address = {
+      home: {
+        street: chance.street(),
+        city: chance.street_suffix().abbreviation,
+        state: chance.state(),
+      },
+    }
+    return withBusiness
+      ? {
+          ...address,
+          ...{
+            business: {
+              street: chance.street(),
+              city: chance.street_suffix().abbreviation,
+              state: chance.state(),
+            },
+          },
+        }
+      : address
+  }
+
+  static generateCustomer(withBusiness = false): Customer {
     return {
       userName: this.generateUserName(),
       emailAddress: this.generateEmailAddress(),
       name: this.generateName(),
+      address: this.generateAddress(withBusiness),
     }
   }
 }

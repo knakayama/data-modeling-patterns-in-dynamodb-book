@@ -1,20 +1,26 @@
-export interface User {
-  userName: string
-  emailAddress: string
-  name: string
+export interface IAddressDetail {
+  street: string
+  city: string
+  state: string
 }
 
-export interface UserRequest {
+export interface IAddress {
+  home: IAddressDetail
+  business?: IAddressDetail
+}
+
+export interface ICustomer {
   userName: string
   emailAddress: string
   name: string
+  address: IAddress
 }
 
 export interface UserNameDocument {
   UserName: string
 }
 
-export interface Session extends UserRequest {
+export interface Session extends ICustomer {
   sessionToken: string
   createdAt: string
   expiresAt: string

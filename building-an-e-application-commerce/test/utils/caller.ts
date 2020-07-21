@@ -11,7 +11,7 @@ import {
   PathParameters,
   Headers,
 } from '@test/utils/interfaces'
-import { UserRequest } from '@externals/drivers/database/customer-interfaces'
+import { ICustomer } from '@externals/drivers/database/customer-interfaces'
 
 type SuccessCallerForParameter = <T>(
   handler: ApiHandler,
@@ -21,7 +21,7 @@ type SuccessCallerForParameter = <T>(
 
 type SuccessCallerForRequestBody = <T>(
   handler: ApiHandler,
-  requestBody: UserRequest
+  requestBody: ICustomer
 ) => Promise<ApiResponseParsed<T>>
 
 type FailureCallerForParameter = (
@@ -34,12 +34,12 @@ type SuccessCaller = <T>(handler: ApiHandler) => Promise<ApiResponseParsed<T>>
 
 type FailureCallerForRequestBody = (
   handler: ApiHandler,
-  requestBody: UserRequest
+  requestBody: ICustomer
 ) => Promise<ApiErrorResponseParsed>
 
 type FailureCallerForRequestBodyAndParameter = (
   handler: ApiHandler,
-  requestBody: UserRequest,
+  requestBody: ICustomer,
   parameters: PathParameters
 ) => Promise<ApiErrorResponseParsed>
 
@@ -47,7 +47,7 @@ type FailureCaller = (handler: ApiHandler) => Promise<ApiErrorResponseParsed>
 
 type SuccessCallerForRequestBodyAndParameter = <T>(
   handler: ApiHandler,
-  requestBody: UserRequest,
+  requestBody: ICustomer,
   parameters: PathParameters
 ) => Promise<ApiResponseParsed<T>>
 
@@ -112,7 +112,7 @@ export const callSuccessForParameter: SuccessCallerForParameter = <T>(
 
 export const callSuccessForRequestBody: SuccessCallerForRequestBody = <T>(
   handler: ApiHandler,
-  requestBody: UserRequest
+  requestBody: ICustomer
 ): Promise<ApiResponseParsed<T>> => {
   const event: ApiEvent = {} as ApiEvent
   event.body = JSON.stringify(requestBody)
@@ -124,7 +124,7 @@ export const callSuccessForRequestBodyAndParameter: SuccessCallerForRequestBodyA
   T
 >(
   handler: ApiHandler,
-  requestBody: UserRequest,
+  requestBody: ICustomer,
   parameters: PathParameters
 ): Promise<ApiResponseParsed<T>> => {
   const event: ApiEvent = {} as ApiEvent
@@ -159,7 +159,7 @@ export const callFailureForParameter: FailureCallerForParameter = (
 
 export const callFailureForRequestBodyAndParameter: FailureCallerForRequestBodyAndParameter = (
   handler: ApiHandler,
-  requestBody: UserRequest,
+  requestBody: ICustomer,
   parameters: PathParameters
 ): Promise<ApiErrorResponseParsed> => {
   const event: ApiEvent = {} as ApiEvent
@@ -171,7 +171,7 @@ export const callFailureForRequestBodyAndParameter: FailureCallerForRequestBodyA
 
 export const callFailureForRequestBody: FailureCallerForRequestBody = (
   handler: ApiHandler,
-  requestBody?: UserRequest
+  requestBody?: ICustomer
 ): Promise<ApiErrorResponseParsed> => {
   const event: ApiEvent = {} as ApiEvent
   event.body = JSON.stringify(requestBody)

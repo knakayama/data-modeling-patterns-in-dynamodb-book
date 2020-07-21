@@ -15,7 +15,7 @@ describe('CustomerCreationUseCase', () => {
 
   describe('createUser', () => {
     describe('When an exception happens', () => {
-      const user = RequestUtils.generateUserRequest()
+      const user = RequestUtils.generateCustomer()
       const message = chance.string()
 
       test('should return Promise rejection', async () => {
@@ -36,7 +36,7 @@ describe('CustomerCreationUseCase', () => {
     })
 
     describe('When everthing is ok', () => {
-      const user = RequestUtils.generateUserRequest()
+      const user = RequestUtils.generateCustomer()
 
       test('should return a book', async () => {
         jest

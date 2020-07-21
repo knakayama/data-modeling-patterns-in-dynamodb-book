@@ -1,13 +1,14 @@
 import { DynamoDBUtils } from '@test/utils/dynamodb-table-utils'
 import { DynamoDB } from 'aws-sdk'
-import { User } from '@externals/drivers/database/customer-interfaces'
+import { Customer } from '@externals/drivers/database/customer'
 
 export class CustomerTableUtils {
-  private static toUser(v: DynamoDB.DocumentClient.AttributeMap): User {
+  private static toCustomer(v: DynamoDB.DocumentClient.AttributeMap): Customer {
     return {
       userName: v.UserName,
       emailAddress: v.EmailAddress,
       name: v.Name,
+      address: v.Address,
     }
   }
 
@@ -56,7 +57,7 @@ export class CustomerTableUtils {
     await DynamoDBUtils.deleteTable(this.tableName)
   }
 
-  async findUserByUserName(userName: string): Promise<User> {
+  async findCustomerByUserName(userName: string): Promise<Customer> {
     const param: DynamoDB.DocumentClient.GetItemInput = {
       TableName: this.tableName,
       Key: {
@@ -69,6 +70,6 @@ export class CustomerTableUtils {
     if (!response.Item) {
       throw new Error('Not found')
     }
-    return CustomerTableUtils.toUser(response.Item)
+    return CustomerTableUtils.toCustomer(response.Item)
   }
 }

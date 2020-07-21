@@ -1,6 +1,6 @@
-import { UserRequest } from '@externals/drivers/database/customer-interfaces'
 import { DynamoDB } from 'aws-sdk'
 import { DatabaseDriverUtils } from '@externals/drivers/database/database-driver-utils'
+import { Customer } from '@externals/drivers/database/customer'
 
 export class CusAndCusAddrTransactionDriver {
   constructor(
@@ -9,17 +9,18 @@ export class CusAndCusAddrTransactionDriver {
     })
   ) {}
 
-  async createCustomer(user: UserRequest): Promise<void> {
+  async createCustomer(customer: Customer): Promise<void> {
     const transactItems: DynamoDB.DocumentClient.TransactWriteItem[] = [
       {
         Put: {
           ConditionExpression: 'attribute_not_exists(PK)',
           Item: {
-            PK: DatabaseDriverUtils.toCustomerPK(user.userName),
-            SK: DatabaseDriverUtils.toCustomerPK(user.userName),
-            UserName: user.userName,
-            EmailAddress: user.emailAddress,
-            Name: user.name,
+            PK: DatabaseDriverUtils.toCustomerPK(customer.userName),
+            SK: DatabaseDriverUtils.toCustomerPK(customer.userName),
+            UserName: customer.userName,
+            EmailAddress: customer.emailAddress,
+            Name: customer.name,
+            Address: customer.address,
           },
           TableName: process.env.APP_TABLE!,
         },
@@ -28,10 +29,10 @@ export class CusAndCusAddrTransactionDriver {
         Put: {
           ConditionExpression: 'attribute_not_exists(PK)',
           Item: {
-            PK: DatabaseDriverUtils.toCustomerEmailPK(user.emailAddress),
-            SK: DatabaseDriverUtils.toCustomerEmailPK(user.emailAddress),
-            UserName: user.userName,
-            EmailAddress: user.emailAddress,
+            PK: DatabaseDriverUtils.toCustomerEmailPK(customer.emailAddress),
+            SK: DatabaseDriverUtils.toCustomerEmailPK(customer.emailAddress),
+            UserName: customer.userName,
+            EmailAddress: customer.emailAddress,
           },
           TableName: process.env.APP_TABLE!,
         },

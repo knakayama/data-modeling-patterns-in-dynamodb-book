@@ -1,10 +1,6 @@
 import { CustomerCreationController } from '@controllers/customer/create-customer'
 import { ErrorCodes } from '@presenters/error-codes'
-import {
-  BadRequestResult,
-  ErrorResult,
-  InternalServerErrorResult,
-} from '@presenters/errors'
+import { InternalServerErrorResult } from '@presenters/errors'
 import { ApiHandler } from '@presenters/interfaces'
 import { HttpStatusCodes } from '@presenters/status-codes'
 import {
@@ -16,7 +12,7 @@ import { CustomerCreationUseCase } from '@use-cases/customer/create-customer'
 import { CusAndCusAddrTransactionDriver } from '@externals/drivers/database/customer-and-customer-address-transaction'
 import { Chance } from 'chance'
 import { RequestUtils } from '@test/utils/request-utils'
-import { UserRequest } from '@externals/drivers/database/customer-interfaces'
+import { ICustomer } from '@externals/drivers/database/customer-interfaces'
 
 const chance = new Chance.Chance()
 
@@ -31,29 +27,25 @@ describe('CustomerCreationController', () => {
   async function callAndCheckError(
     handler: ApiHandler,
     expectedHttpStatusCode: number,
-    errorResult: ErrorResult,
-    requestBody: UserRequest
+    errorCode: string,
+    requestBody: ICustomer
   ): Promise<void> {
     const response = await callFailureForRequestBody(handler, requestBody)
 
     expect(response.statusCode).toBe(expectedHttpStatusCode)
-    expect(response.parsedBody.error.code).toBe(errorResult.code)
-    expect(response.parsedBody.error.description).toBe(errorResult.description)
+    expect(response.parsedBody.error.code).toBe(errorCode)
+    expect(response.parsedBody.error.description).not.toBeEmpty()
   }
 
   describe('createCustomer', () => {
     describe('When there is no request body', () => {
       test('should return Bad Request', async () => {
-        const requestBody = {} as UserRequest
+        const requestBody = {} as ICustomer
 
-        const errorResult = new BadRequestResult(
-          ErrorCodes.BadRequest,
-          'Please specify a valid request body!'
-        )
         await callAndCheckError(
           customerCreationController.createCustomer,
           HttpStatusCodes.BadRequest,
-          errorResult,
+          ErrorCodes.BadRequest,
           requestBody
         )
       })
@@ -61,17 +53,13 @@ describe('CustomerCreationController', () => {
 
     describe('When a user name is missing', () => {
       test('should return Bad Request', async () => {
-        const requestBody: UserRequest = RequestUtils.generateUserRequest()
+        const requestBody: ICustomer = RequestUtils.generateCustomer()
         delete requestBody.userName
 
-        const errorResult = new BadRequestResult(
-          ErrorCodes.BadRequest,
-          'Please specify a valid request body!'
-        )
         await callAndCheckError(
           customerCreationController.createCustomer,
           HttpStatusCodes.BadRequest,
-          errorResult,
+          ErrorCodes.BadRequest,
           requestBody
         )
       })
@@ -79,17 +67,13 @@ describe('CustomerCreationController', () => {
 
     describe('When an email address is missing', () => {
       test('should return Bad Request', async () => {
-        const requestBody: UserRequest = RequestUtils.generateUserRequest()
+        const requestBody: ICustomer = RequestUtils.generateCustomer()
         delete requestBody.emailAddress
 
-        const errorResult = new BadRequestResult(
-          ErrorCodes.BadRequest,
-          'Please specify a valid request body!'
-        )
         await callAndCheckError(
           customerCreationController.createCustomer,
           HttpStatusCodes.BadRequest,
-          errorResult,
+          ErrorCodes.BadRequest,
           requestBody
         )
       })
@@ -97,43 +81,34 @@ describe('CustomerCreationController', () => {
 
     describe('When a name is missing', () => {
       test('should return Bad Request', async () => {
-        const requestBody: UserRequest = RequestUtils.generateUserRequest()
+        const requestBody: ICustomer = RequestUtils.generateCustomer()
         delete requestBody.name
 
-        const errorResult = new BadRequestResult(
-          ErrorCodes.BadRequest,
-          'Please specify a valid request body!'
-        )
         await callAndCheckError(
           customerCreationController.createCustomer,
           HttpStatusCodes.BadRequest,
-          errorResult,
+          ErrorCodes.BadRequest,
           requestBody
         )
       })
     })
 
     describe('Unexpected internal situations', () => {
-      const message = chance.string()
       test('should return Internal Server Error', async () => {
-        const requestBody = RequestUtils.generateUserRequest()
-        const errorResult = new InternalServerErrorResult(
-          ErrorCodes.InternalServerError,
-          message
-        )
+        const requestBody = RequestUtils.generateCustomer()
         jest
           .spyOn(customerCreationUseCase, 'createCustomer')
           .mockRejectedValueOnce(
             new InternalServerErrorResult(
               ErrorCodes.InternalServerError,
-              message
+              chance.string()
             )
           )
 
         await callAndCheckError(
           customerCreationController.createCustomer,
           HttpStatusCodes.InternalServerError,
-          errorResult,
+          ErrorCodes.InternalServerError,
           requestBody
         )
       })
@@ -141,18 +116,13 @@ describe('CustomerCreationController', () => {
 
     describe('When a user name is not valid', () => {
       test('should return Bad Request', async () => {
-        const requestBody = RequestUtils.generateUserRequest()
+        const requestBody = RequestUtils.generateCustomer()
         requestBody.userName = 'invalid-user-name!'
-
-        const errorResult = new BadRequestResult(
-          ErrorCodes.BadRequest,
-          'Please specify a valid user name!'
-        )
 
         await callAndCheckError(
           customerCreationController.createCustomer,
           HttpStatusCodes.BadRequest,
-          errorResult,
+          ErrorCodes.BadRequest,
           requestBody
         )
       })
@@ -160,18 +130,13 @@ describe('CustomerCreationController', () => {
 
     describe('When an email address is not valid', () => {
       test('should return Bad Request', async () => {
-        const requestBody = RequestUtils.generateUserRequest()
+        const requestBody = RequestUtils.generateCustomer()
         requestBody.emailAddress = 'invalid-email-address!'
-
-        const errorResult = new BadRequestResult(
-          ErrorCodes.BadRequest,
-          'Please specify a valid email address!'
-        )
 
         await callAndCheckError(
           customerCreationController.createCustomer,
           HttpStatusCodes.BadRequest,
-          errorResult,
+          ErrorCodes.BadRequest,
           requestBody
         )
       })
@@ -179,26 +144,109 @@ describe('CustomerCreationController', () => {
 
     describe('When a name is not valid', () => {
       test('should return Bad Request', async () => {
-        const requestBody = RequestUtils.generateUserRequest()
+        const requestBody = RequestUtils.generateCustomer()
         requestBody.name = 'invalid-name!'
-
-        const errorResult = new BadRequestResult(
-          ErrorCodes.BadRequest,
-          'Please specify a valid name!'
-        )
 
         await callAndCheckError(
           customerCreationController.createCustomer,
           HttpStatusCodes.BadRequest,
-          errorResult,
+          ErrorCodes.BadRequest,
           requestBody
         )
       })
     })
 
+    describe('When it comes to home property', () => {
+      describe('When a street is missing', () => {
+        test('should return Bad Request', async () => {
+          const requestBody = RequestUtils.generateCustomer()
+          delete requestBody.address.home.street
+
+          await callAndCheckError(
+            customerCreationController.createCustomer,
+            HttpStatusCodes.BadRequest,
+            ErrorCodes.BadRequest,
+            requestBody
+          )
+        })
+      })
+
+      describe('When a city is missing', () => {
+        test('should return Bad Request', async () => {
+          const requestBody = RequestUtils.generateCustomer()
+          delete requestBody.address.home.city
+
+          await callAndCheckError(
+            customerCreationController.createCustomer,
+            HttpStatusCodes.BadRequest,
+            ErrorCodes.BadRequest,
+            requestBody
+          )
+        })
+      })
+
+      describe('When a state is missing', () => {
+        test('should return Bad Request', async () => {
+          const requestBody = RequestUtils.generateCustomer()
+          delete requestBody.address.home.state
+
+          await callAndCheckError(
+            customerCreationController.createCustomer,
+            HttpStatusCodes.BadRequest,
+            ErrorCodes.BadRequest,
+            requestBody
+          )
+        })
+      })
+    })
+
+    describe('When it comes to business property', () => {
+      describe('When a street is missing', () => {
+        test('should return Bad Request', async () => {
+          const requestBody = RequestUtils.generateCustomer(true)
+          delete requestBody.address.business!.street
+
+          await callAndCheckError(
+            customerCreationController.createCustomer,
+            HttpStatusCodes.BadRequest,
+            ErrorCodes.BadRequest,
+            requestBody
+          )
+        })
+      })
+
+      describe('When a city is missing', () => {
+        test('should return Bad Request', async () => {
+          const requestBody = RequestUtils.generateCustomer(true)
+          delete requestBody.address.business!.city
+
+          await callAndCheckError(
+            customerCreationController.createCustomer,
+            HttpStatusCodes.BadRequest,
+            ErrorCodes.BadRequest,
+            requestBody
+          )
+        })
+      })
+
+      describe('When a state is missing', () => {
+        test('should return Bad Request', async () => {
+          const requestBody = RequestUtils.generateCustomer(true)
+          delete requestBody.address.business!.state
+
+          await callAndCheckError(
+            customerCreationController.createCustomer,
+            HttpStatusCodes.BadRequest,
+            ErrorCodes.BadRequest,
+            requestBody
+          )
+        })
+      })
+    })
+
     describe('When it suceeds', () => {
       test('should return 202', async () => {
-        const requestBody = RequestUtils.generateUserRequest()
+        const requestBody = RequestUtils.generateCustomer()
         jest
           .spyOn(customerCreationUseCase, 'createCustomer')
           .mockResolvedValue()

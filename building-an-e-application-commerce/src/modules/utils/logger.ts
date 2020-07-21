@@ -21,7 +21,8 @@ export class Logger {
     Logger.logger._logger.info(message)
   }
 
-  error(message: string): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error(message: any): void {
     Logger.logger._logger.error(message)
   }
 }

@@ -1,31 +1,29 @@
-import { UserRequest } from '@externals/drivers/database/customer-interfaces'
-import { DynamoDB } from 'aws-sdk'
-import { v4 as uuidv4 } from 'uuid'
-import * as dayjs from 'dayjs'
+import { IsEmail, ValidateNested, Matches } from 'class-validator'
+import { ICustomer } from '@externals/drivers/database/customer-interfaces'
+import { Type } from 'class-transformer'
+import { Address } from '@externals/drivers/database/address'
+import 'reflect-metadata'
 
-export class CustomerDatabaseDriver {
-  constructor(
-    private readonly _dynamoDBD = new DynamoDB.DocumentClient({
-      apiVersion: '2012-08-10',
-    })
-  ) {}
+export class Customer implements ICustomer {
+  @Matches(/^[a-z0-9]+$/i, {
+    message: 'Please specify a valid user name!',
+  })
+  userName!: string
 
-  async createCustomer(user: UserRequest): Promise<void> {
-    const date = dayjs()
-    const param: DynamoDB.DocumentClient.PutItemInput = {
-      ConditionExpression: 'attribute_not_exists(#SESSION)',
-      ExpressionAttributeNames: {
-        '#SESSION': 'Session',
-      },
-      Item: {
-        SessionToken: uuidv4(),
-        UserName: user.userName,
-        CreatedAt: date.toISOString(),
-        ExpiresAt: date.add(7, 'day').toISOString(),
-        TTL: date.unix(),
-      },
-      TableName: process.env.APP_TABLE!,
+  @IsEmail(
+    {},
+    {
+      message: 'Please specify a valid email address!',
     }
-    await this._dynamoDBD.put(param).promise()
-  }
+  )
+  emailAddress!: string
+
+  @Matches(/^[a-z0-9\s]+$/i, {
+    message: 'Please specify a valid name!',
+  })
+  name!: string
+
+  @ValidateNested()
+  @Type(() => Address)
+  address!: Address
 }

@@ -20,10 +20,10 @@ describe('CusAndCuAddrTransactionDriver', () => {
     })
 
     describe('When everything is ok', () => {
-      const customer = RequestUtils.generateUserRequest()
+      const customer = RequestUtils.generateCustomer()
       test('should create a user', async () => {
         await cusAndCusAddrTransactionDriver.createCustomer(customer)
-        const actual = await customerTableUtils.findUserByUserName(
+        const actual = await customerTableUtils.findCustomerByUserName(
           customer.userName
         )
 
