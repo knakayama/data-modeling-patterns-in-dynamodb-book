@@ -1,6 +1,8 @@
-import { ICustomer } from '@externals/drivers/database/customer-interfaces'
+import { OrderRequest } from '@externals/drivers/database/order-request'
+import { DatabaseDriverUtils } from '@externals/drivers/database/database-driver-utils'
 import { DynamoDB } from 'aws-sdk'
-import { v4 as uuidv4 } from 'uuid'
+// https://www.typescriptlang.org/docs/handbook/modules.html#export--and-import--require
+import ksuid = require('ksuid')
 import * as dayjs from 'dayjs'
 
 export class CustomerDatabaseDriver {
@@ -10,19 +12,21 @@ export class CustomerDatabaseDriver {
     })
   ) {}
 
-  async createCustomer(user: ICustomer): Promise<void> {
+  async placeOrder(orderRequest: OrderRequest): Promise<void> {
     const date = dayjs()
+    const orderId = ksuid.randomSync().string
     const param: DynamoDB.DocumentClient.PutItemInput = {
-      ConditionExpression: 'attribute_not_exists(#SESSION)',
+      ConditionExpression: 'attribute_not_exists(#PK)',
       ExpressionAttributeNames: {
-        '#SESSION': 'Session',
+        '#PK': 'PK',
       },
       Item: {
-        SessionToken: uuidv4(),
-        UserName: user.userName,
+        PK: DatabaseDriverUtils.toCustomerPK(orderRequest.userName),
+        SK: DatabaseDriverUtils.toOrderSK(orderId),
+        OrderId: orderId,
         CreatedAt: date.toISOString(),
-        ExpiresAt: date.add(7, 'day').toISOString(),
-        TTL: date.unix(),
+        Amount: orderRequest.amount,
+        NumberItems: orderRequest.numberItems,
       },
       TableName: process.env.APP_TABLE!,
     }

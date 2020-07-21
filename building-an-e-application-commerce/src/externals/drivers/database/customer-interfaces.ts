@@ -16,20 +16,9 @@ export interface ICustomer {
   address: IAddress
 }
 
-export interface UserNameDocument {
-  UserName: string
-}
-
-export interface Session extends ICustomer {
-  sessionToken: string
-  createdAt: string
-  expiresAt: string
-  tTL: number
-}
-
-export interface SessionDocument extends UserNameDocument {
-  SessionToken: string
-  CreatedAt: string
-  ExpiresAt: string
-  TTL: number
+export interface IOrderRequest {
+  userName: string
+  status: 'SHIPPED' | 'CANCELED' | 'PROCESSING'
+  amount: number
+  numberItems: number
 }

@@ -6,4 +6,8 @@ export class DatabaseDriverUtils {
   static toCustomerEmailPK(customerEmail: string): string {
     return `CUSTOMEREMAIL#${customerEmail}`
   }
+
+  static toOrderSK(orderId: string): string {
+    return `#ORDER#${orderId}`
+  }
 }
