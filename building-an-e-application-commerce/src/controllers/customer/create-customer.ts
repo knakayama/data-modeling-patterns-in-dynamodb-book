@@ -24,7 +24,10 @@ export class CustomerCreationController {
     callback: ApiCallback
   ): void => {
     const logger = Logger.getLogger()
-    const requestBody = plainToClass(Customer, JSON.parse(event?.body ?? ''))
+    const requestBody = plainToClass(
+      Customer,
+      JSON.parse(event?.body ?? JSON.stringify({}))
+    )
 
     validateOrReject(requestBody)
       .then(() => this._customerCreationUseCase.createCustomer(requestBody))
@@ -35,7 +38,7 @@ export class CustomerCreationController {
           ResponseBuilder.badRequest(
             ErrorCodes.BadRequest,
             // TODO: more approprieate error message
-            'Please check your parameters!',
+            'Please check your request body!',
             callback
           )
         }
