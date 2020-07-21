@@ -24,7 +24,6 @@ export class CustomerCreationController {
     context: ApiContext,
     callback: ApiCallback
   ): void => {
-    const logger = Logger.getLogger()
     const requestBody = plainToClass(
       Customer,
       ControllerUtil.parseEvent<Customer>(event.body)
@@ -34,7 +33,7 @@ export class CustomerCreationController {
       .then(() => this._customerCreationUseCase.createCustomer(requestBody))
       .then(() => ResponseBuilder.noContent(callback))
       .catch((error) => {
-        logger.error(error)
+        Logger.getLogger().error(error)
         if (ValidatorUtils.isValidationError(error)) {
           ResponseBuilder.badRequest(
             ErrorCodes.BadRequest,

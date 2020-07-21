@@ -22,7 +22,6 @@ export class OrderPlacementController {
     context: ApiContext,
     callback: ApiCallback
   ): void => {
-    const logger = Logger.getLogger()
     const requestBody = plainToClass(
       OrderRequest,
       ControllerUtil.parseEvent<OrderRequest>(event.body)
@@ -32,7 +31,7 @@ export class OrderPlacementController {
       .then(() => this._orderPlacementUseCase.placeOrder(requestBody))
       .then(() => ResponseBuilder.noContent(callback))
       .catch((error) => {
-        logger.error(error)
+        Logger.getLogger().error(error)
         if (ValidatorUtils.isValidationError(error)) {
           ResponseBuilder.badRequest(
             ErrorCodes.BadRequest,
