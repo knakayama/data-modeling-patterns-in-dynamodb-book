@@ -12,6 +12,7 @@ import { Logger } from '@modules/utils/logger'
 import { Customer } from '@externals/drivers/database/customer'
 import { validateOrReject } from 'class-validator'
 import { plainToClass } from 'class-transformer'
+import { ControllerUtil } from '@modules/utils/controller-util'
 
 export class CustomerCreationController {
   constructor(
@@ -26,7 +27,7 @@ export class CustomerCreationController {
     const logger = Logger.getLogger()
     const requestBody = plainToClass(
       Customer,
-      JSON.parse(event?.body ?? JSON.stringify({}))
+      ControllerUtil.parseEvent<Customer>(event.body)
     )
 
     validateOrReject(requestBody)

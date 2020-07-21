@@ -12,6 +12,7 @@ import { Logger } from '@modules/utils/logger'
 import { validateOrReject } from 'class-validator'
 import { plainToClass } from 'class-transformer'
 import { OrderRequest } from '@externals/drivers/database/order-request'
+import { ControllerUtil } from '@modules/utils/controller-util'
 
 export class OrderPlacementController {
   constructor(private readonly _orderPlacementUseCase: OrderPlacementUseCase) {}
@@ -24,7 +25,7 @@ export class OrderPlacementController {
     const logger = Logger.getLogger()
     const requestBody = plainToClass(
       OrderRequest,
-      JSON.parse(event?.body ?? JSON.stringify({}))
+      ControllerUtil.parseEvent<OrderRequest>(event.body)
     )
 
     validateOrReject(requestBody)
