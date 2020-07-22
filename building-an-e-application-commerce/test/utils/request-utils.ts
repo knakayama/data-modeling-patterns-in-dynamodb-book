@@ -1,6 +1,6 @@
 import { Chance } from 'chance'
-import { Address } from '@externals/drivers/database/address'
-import { Customer } from '@externals/drivers/database/customer'
+import { Address } from '@modules/validators/address'
+import { Customer } from '@modules/validators/customer'
 import {
   OrderStatus,
   IOrderRequestBody,

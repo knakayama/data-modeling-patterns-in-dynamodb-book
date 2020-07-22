@@ -1,6 +1,6 @@
 import { DynamoDBUtils } from '@test/utils/dynamodb-table-utils'
 import { DynamoDB } from 'aws-sdk'
-import { Customer } from '@externals/drivers/database/customer'
+import { Customer } from '@modules/validators/customer'
 
 export class CustomerTableUtils {
   private static toCustomer(v: DynamoDB.DocumentClient.AttributeMap): Customer {

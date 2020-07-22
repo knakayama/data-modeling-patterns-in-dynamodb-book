@@ -1,6 +1,6 @@
 import { DynamoDB } from 'aws-sdk'
 import { DatabaseDriverUtils } from '@externals/drivers/database/database-driver-utils'
-import { Customer } from '@externals/drivers/database/customer'
+import { Customer } from '@modules/validators/customer'
 
 export class CusAndCusAddrTransactionDriver {
   constructor(

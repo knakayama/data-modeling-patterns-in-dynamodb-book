@@ -2,7 +2,7 @@ import { ErrorCodes } from '@presenters/error-codes'
 import { InternalServerErrorResult } from '@presenters/errors'
 import { CustomerDatabaseDriver } from '@externals/drivers/database/customer-table'
 import { Logger } from '@modules/utils/logger'
-import { OrderRequest } from '@externals/drivers/database/order-request'
+import { OrderRequest } from '@modules/validators/order-request'
 
 export class OrderPlacementUseCase {
   constructor(

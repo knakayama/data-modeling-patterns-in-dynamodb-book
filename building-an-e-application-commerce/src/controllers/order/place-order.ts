@@ -11,7 +11,7 @@ import { OrderPlacementUseCase } from '@use-cases/order/place-order'
 import { Logger } from '@modules/utils/logger'
 import { validateOrReject } from 'class-validator'
 import { plainToClass } from 'class-transformer'
-import { OrderRequest } from '@externals/drivers/database/order-request'
+import { OrderRequest } from '@modules/validators/order-request'
 import { ControllerUtil } from '@modules/utils/controller-util'
 
 export class OrderPlacementController {

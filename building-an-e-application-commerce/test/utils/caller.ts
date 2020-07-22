@@ -15,7 +15,7 @@ import {
   ICustomer,
   IOrderRequestBody,
 } from '@externals/drivers/database/customer-interfaces'
-import { OrderRequest } from '@externals/drivers/database/order-request'
+import { OrderRequest } from '@modules/validators/order-request'
 
 function invokeHandlerForFailure(
   event: ApiEvent,

@@ -2,7 +2,7 @@ import { ErrorCodes } from '@presenters/error-codes'
 import { InternalServerErrorResult } from '@presenters/errors'
 import { CusAndCusAddrTransactionDriver } from '@externals/drivers/database/customer-and-customer-address-transaction'
 import { Logger } from '@modules/utils/logger'
-import { Customer } from '@externals/drivers/database/customer'
+import { Customer } from '@modules/validators/customer'
 
 export class CustomerCreationUseCase {
   constructor(

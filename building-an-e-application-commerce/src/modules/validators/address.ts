@@ -1,5 +1,5 @@
 import { IAddress } from '@externals/drivers/database/customer-interfaces'
-import { AddressDetail } from '@externals/drivers/database/address-detail'
+import { AddressDetail } from '@modules/validators/address-detail'
 import { ValidateNested, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
 import 'reflect-metadata'

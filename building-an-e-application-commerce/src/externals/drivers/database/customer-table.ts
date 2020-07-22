@@ -1,4 +1,4 @@
-import { OrderRequest } from '@externals/drivers/database/order-request'
+import { OrderRequest } from '@modules/validators/order-request'
 import { DatabaseDriverUtils } from '@externals/drivers/database/database-driver-utils'
 import { DynamoDB } from 'aws-sdk'
 import { IOrder } from '@externals/drivers/database/customer-interfaces'

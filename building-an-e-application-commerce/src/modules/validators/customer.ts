@@ -1,7 +1,7 @@
 import { IsEmail, ValidateNested, Matches } from 'class-validator'
 import { ICustomer } from '@externals/drivers/database/customer-interfaces'
 import { Type } from 'class-transformer'
-import { Address } from '@externals/drivers/database/address'
+import { Address } from '@modules/validators/address'
 import 'reflect-metadata'
 
 export class Customer implements ICustomer {
