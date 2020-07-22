@@ -40,6 +40,8 @@ export class CustomerDatabaseDriver {
         CreatedAt: date.toISOString(),
         Amount: orderRequest.amount,
         NumberItems: orderRequest.numberItems,
+        GSI1PK: DatabaseDriverUtils.toOrderPK(orderId),
+        GSI1SK: DatabaseDriverUtils.toOrderPK(orderId),
       },
       TableName: process.env.APP_TABLE!,
     }

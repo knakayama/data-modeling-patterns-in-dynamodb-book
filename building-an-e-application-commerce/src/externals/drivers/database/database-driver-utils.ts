@@ -10,4 +10,8 @@ export class DatabaseDriverUtils {
   static toOrderSK(orderId: string): string {
     return `#ORDER#${orderId}`
   }
+
+  static toOrderPK(orderId: string): string {
+    return `ORDER#${orderId}`
+  }
 }
