@@ -16,9 +16,14 @@ export interface ICustomer {
   address: IAddress
 }
 
-export interface IOrderRequest {
-  userName: string
-  status: 'SHIPPED' | 'CANCELED' | 'PROCESSING'
+export type OrderStatus = 'SHIPPED' | 'CANCELED' | 'PROCESSING'
+
+export interface IOrderRequestBody {
+  status: OrderStatus
   amount: number
   numberItems: number
+}
+
+export interface IOrderRequest extends IOrderRequestBody {
+  userName: string
 }

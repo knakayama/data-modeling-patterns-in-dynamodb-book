@@ -7,7 +7,7 @@ import {
   ApiHandler,
 } from '@presenters/interfaces'
 import { ResponseBuilder } from '@presenters/response-builder'
-import { OrderPlacementUseCase } from '@use-cases/customer/place-order'
+import { OrderPlacementUseCase } from '@use-cases/order/place-order'
 import { Logger } from '@modules/utils/logger'
 import { validateOrReject } from 'class-validator'
 import { plainToClass } from 'class-transformer'
@@ -22,10 +22,13 @@ export class OrderPlacementController {
     context: ApiContext,
     callback: ApiCallback
   ): void => {
-    const requestBody = plainToClass(
-      OrderRequest,
-      ControllerUtil.parseEvent<OrderRequest>(event.body)
-    )
+    const userName = event?.pathParameters?.customer
+    const requestBody = plainToClass(OrderRequest, {
+      ...ControllerUtil.parseEvent<OrderRequest>(event.body),
+      ...{
+        userName,
+      },
+    })
 
     validateOrReject(requestBody)
       .then(() => this._orderPlacementUseCase.placeOrder(requestBody))

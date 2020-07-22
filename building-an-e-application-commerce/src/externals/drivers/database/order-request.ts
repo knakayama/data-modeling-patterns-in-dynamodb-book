@@ -1,5 +1,6 @@
-import { Matches, IsIn } from 'class-validator'
+import { Matches, IsIn, IsNumber } from 'class-validator'
 import { IOrderRequest } from '@externals/drivers/database/customer-interfaces'
+import { OrderStatus } from '@externals/drivers/database/customer-interfaces'
 
 export class OrderRequest implements IOrderRequest {
   @Matches(/^[a-z0-9]+$/i, {
@@ -10,9 +11,11 @@ export class OrderRequest implements IOrderRequest {
   @IsIn(['SHIPPED', 'CANCELED', 'PROCESSING'], {
     message: 'Please specify a valid email address!',
   })
-  status!: 'SHIPPED' | 'CANCELED' | 'PROCESSING'
+  status!: OrderStatus
 
+  @IsNumber({}, { message: 'Please specify a valid amount!' })
   amount!: number
 
+  @IsNumber({}, { message: 'Please specify number items!' })
   numberItems!: number
 }

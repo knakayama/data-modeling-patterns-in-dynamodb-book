@@ -1,5 +1,5 @@
-import { OrderPlacementController } from '@controllers/customer/place-order'
-import { OrderPlacementUseCase } from '@use-cases/customer/place-order'
+import { OrderPlacementController } from '@controllers/order/place-order'
+import { OrderPlacementUseCase } from '@use-cases/order/place-order'
 import { CustomerDatabaseDriver } from '@externals/drivers/database/customer-table'
 import { ApiInterceptor } from '@middlewares/api/interceptor'
 

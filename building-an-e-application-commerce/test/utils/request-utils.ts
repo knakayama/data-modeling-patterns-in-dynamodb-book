@@ -1,13 +1,23 @@
 import { Chance } from 'chance'
 import { Address } from '@externals/drivers/database/address'
 import { Customer } from '@externals/drivers/database/customer'
+import {
+  OrderStatus,
+  IOrderRequestBody,
+} from '@externals/drivers/database/customer-interfaces'
 
 const chance: Chance.Chance = new Chance()
 
 export class RequestUtils {
+  static generateStatus(): OrderStatus {
+    return ['SHIPPED', 'CANCELED', 'PROCESSING'][
+      chance.integer({ min: 0, max: 2 })
+    ] as OrderStatus
+  }
+
   static generateUserName(): string {
     return chance.name().split(' ').join('').toLowerCase()
-}
+  }
 
   static generateName(): string {
     return chance.name()
@@ -45,6 +55,14 @@ export class RequestUtils {
       emailAddress: this.generateEmailAddress(),
       name: this.generateName(),
       address: this.generateAddress(withBusiness),
+    }
+  }
+
+  static generateOrderRequestBody(): IOrderRequestBody {
+    return {
+      status: this.generateStatus(),
+      amount: chance.integer(),
+      numberItems: chance.integer(),
     }
   }
 }
