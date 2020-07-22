@@ -16,9 +16,11 @@ export class CustomerDatabaseDriver {
     const date = dayjs()
     const orderId = ksuid.randomSync().string
     const param: DynamoDB.DocumentClient.PutItemInput = {
-      ConditionExpression: 'attribute_not_exists(#PK)',
+      ConditionExpression:
+        'attribute_not_exists(#PK) AND attribute_not_exists(#SK)',
       ExpressionAttributeNames: {
         '#PK': 'PK',
+        '#SK': 'SK',
       },
       Item: {
         PK: DatabaseDriverUtils.toCustomerPK(orderRequest.customerName),
