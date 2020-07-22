@@ -6,9 +6,9 @@ import 'reflect-metadata'
 
 export class Customer implements ICustomer {
   @Matches(/^[a-z0-9]+$/i, {
-    message: 'Please specify a valid user name!',
+    message: 'Please specify a valid customer name!',
   })
-  userName!: string
+  customerName!: string
 
   @IsEmail(
     {},

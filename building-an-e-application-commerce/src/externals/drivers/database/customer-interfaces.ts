@@ -10,7 +10,7 @@ export interface IAddress {
 }
 
 export interface ICustomer {
-  userName: string
+  customerName: string
   emailAddress: string
   name: string
   address: IAddress
@@ -25,5 +25,5 @@ export interface IOrderRequestBody {
 }
 
 export interface IOrderRequest extends IOrderRequestBody {
-  userName: string
+  customerName: string
 }

@@ -15,7 +15,7 @@ export class RequestUtils {
     ] as OrderStatus
   }
 
-  static generateUserName(): string {
+  static generateCustomerName(): string {
     return chance.name().split(' ').join('').toLowerCase()
   }
 
@@ -51,7 +51,7 @@ export class RequestUtils {
 
   static generateCustomer(withBusiness = false): Customer {
     return {
-      userName: this.generateUserName(),
+      customerName: this.generateCustomerName(),
       emailAddress: this.generateEmailAddress(),
       name: this.generateName(),
       address: this.generateAddress(withBusiness),

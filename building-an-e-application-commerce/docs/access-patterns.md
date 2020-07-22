@@ -1,4 +1,4 @@
-- Create Customer (unique on both username and email address)
+- Create Customer (unique on both customer name and email address)
 - Create / Update / Delete Mailing Address for Customer
 - Place Order
 - Update Order

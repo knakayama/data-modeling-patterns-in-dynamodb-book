@@ -21,7 +21,7 @@ export class CustomerDatabaseDriver {
         '#PK': 'PK',
       },
       Item: {
-        PK: DatabaseDriverUtils.toCustomerPK(orderRequest.userName),
+        PK: DatabaseDriverUtils.toCustomerPK(orderRequest.customerName),
         SK: DatabaseDriverUtils.toOrderSK(orderId),
         OrderId: orderId,
         CreatedAt: date.toISOString(),

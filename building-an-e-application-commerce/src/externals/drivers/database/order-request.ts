@@ -4,9 +4,9 @@ import { OrderStatus } from '@externals/drivers/database/customer-interfaces'
 
 export class OrderRequest implements IOrderRequest {
   @Matches(/^[a-z0-9]+$/i, {
-    message: 'Please specify a valid user name!',
+    message: 'Please specify a valid customer name!',
   })
-  userName!: string
+  customerName!: string
 
   @IsIn(['SHIPPED', 'CANCELED', 'PROCESSING'], {
     message: 'Please specify a valid email address!',

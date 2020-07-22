@@ -13,9 +13,9 @@ describe('CustomerCreationUseCase', () => {
     customerDatabaseDriver
   )
 
-  describe('createUser', () => {
+  describe('createCustomer', () => {
     describe('When an exception happens', () => {
-      const user = RequestUtils.generateCustomer()
+      const customer = RequestUtils.generateCustomer()
       const message = chance.string()
 
       test('should return Promise rejection', async () => {
@@ -26,7 +26,7 @@ describe('CustomerCreationUseCase', () => {
           })
 
         await customerCreationUseCase
-          .createCustomer(user)
+          .createCustomer(customer)
           .catch((error: InternalServerErrorResult) => {
             expect(error).toBeInstanceOf(InternalServerErrorResult)
             expect(error.code).toEqual(ErrorCodes.InternalServerError)
@@ -36,14 +36,14 @@ describe('CustomerCreationUseCase', () => {
     })
 
     describe('When everthing is ok', () => {
-      const user = RequestUtils.generateCustomer()
+      const customer = RequestUtils.generateCustomer()
 
       test('should return a book', async () => {
         jest
           .spyOn(customerDatabaseDriver, 'createCustomer')
           .mockResolvedValueOnce()
 
-        const actual = await customerCreationUseCase.createCustomer(user)
+        const actual = await customerCreationUseCase.createCustomer(customer)
         expect(actual).toBeUndefined()
       })
     })

@@ -51,10 +51,10 @@ describe('CustomerCreationController', () => {
       })
     })
 
-    describe('When a user name is missing', () => {
+    describe('When a customer name is missing', () => {
       test('should return Bad Request', async () => {
         const requestBody: ICustomer = RequestUtils.generateCustomer()
-        delete requestBody.userName
+        delete requestBody.customerName
 
         await callAndCheckError(
           customerCreationController.createCustomer,
@@ -114,10 +114,10 @@ describe('CustomerCreationController', () => {
       })
     })
 
-    describe('When a user name is not valid', () => {
+    describe('When a customer name is not valid', () => {
       test('should return Bad Request', async () => {
         const requestBody = RequestUtils.generateCustomer()
-        requestBody.userName = 'invalid-user-name!'
+        requestBody.customerName = 'invalid-customer-name!'
 
         await callAndCheckError(
           customerCreationController.createCustomer,

@@ -21,10 +21,10 @@ describe('CusAndCuAddrTransactionDriver', () => {
 
     describe('When everything is ok', () => {
       const customer = RequestUtils.generateCustomer()
-      test('should create a user', async () => {
+      test('should create a customer', async () => {
         await cusAndCusAddrTransactionDriver.createCustomer(customer)
-        const actual = await customerTableUtils.findCustomerByUserName(
-          customer.userName
+        const actual = await customerTableUtils.findCustomerByCustomerName(
+          customer.customerName
         )
 
         expect(actual).toStrictEqual(customer)

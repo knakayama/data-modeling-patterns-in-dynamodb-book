@@ -5,7 +5,7 @@ import { Customer } from '@externals/drivers/database/customer'
 export class CustomerTableUtils {
   private static toCustomer(v: DynamoDB.DocumentClient.AttributeMap): Customer {
     return {
-      userName: v.UserName,
+      customerName: v.CustomerName,
       emailAddress: v.EmailAddress,
       name: v.Name,
       address: v.Address,
@@ -57,12 +57,12 @@ export class CustomerTableUtils {
     await DynamoDBUtils.deleteTable(this.tableName)
   }
 
-  async findCustomerByUserName(userName: string): Promise<Customer> {
+  async findCustomerByCustomerName(customerName: string): Promise<Customer> {
     const param: DynamoDB.DocumentClient.GetItemInput = {
       TableName: this.tableName,
       Key: {
-        PK: `CUSTOMER#${userName}`,
-        SK: `CUSTOMER#${userName}`,
+        PK: `CUSTOMER#${customerName}`,
+        SK: `CUSTOMER#${customerName}`,
       },
     }
     const response = await this.dynamoDBD.get(param).promise()

@@ -15,9 +15,9 @@ export class CusAndCusAddrTransactionDriver {
         Put: {
           ConditionExpression: 'attribute_not_exists(PK)',
           Item: {
-            PK: DatabaseDriverUtils.toCustomerPK(customer.userName),
-            SK: DatabaseDriverUtils.toCustomerPK(customer.userName),
-            UserName: customer.userName,
+            PK: DatabaseDriverUtils.toCustomerPK(customer.customerName),
+            SK: DatabaseDriverUtils.toCustomerPK(customer.customerName),
+            CustomerName: customer.customerName,
             EmailAddress: customer.emailAddress,
             Name: customer.name,
             Address: customer.address,
@@ -31,7 +31,7 @@ export class CusAndCusAddrTransactionDriver {
           Item: {
             PK: DatabaseDriverUtils.toCustomerEmailPK(customer.emailAddress),
             SK: DatabaseDriverUtils.toCustomerEmailPK(customer.emailAddress),
-            UserName: customer.userName,
+            CustomerName: customer.customerName,
             EmailAddress: customer.emailAddress,
           },
           TableName: process.env.APP_TABLE!,

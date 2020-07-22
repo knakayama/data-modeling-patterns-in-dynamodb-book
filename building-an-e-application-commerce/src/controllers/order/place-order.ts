@@ -22,11 +22,11 @@ export class OrderPlacementController {
     context: ApiContext,
     callback: ApiCallback
   ): void => {
-    const userName = event?.pathParameters?.customer
+    const customerName = event?.pathParameters?.customer
     const requestBody = plainToClass(OrderRequest, {
       ...ControllerUtil.parseEvent<OrderRequest>(event.body),
       ...{
-        userName,
+        customerName,
       },
     })
 
