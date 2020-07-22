@@ -11,7 +11,10 @@ import {
   PathParameters,
   Headers,
 } from '@test/utils/interfaces'
-import { ICustomer, IOrderRequestBody } from '@externals/drivers/database/customer-interfaces'
+import {
+  ICustomer,
+  IOrderRequestBody,
+} from '@externals/drivers/database/customer-interfaces'
 import { OrderRequest } from '@externals/drivers/database/order-request'
 
 function invokeHandlerForFailure(

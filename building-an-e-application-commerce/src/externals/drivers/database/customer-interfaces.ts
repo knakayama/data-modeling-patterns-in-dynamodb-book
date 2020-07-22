@@ -1,3 +1,7 @@
+export interface ICustomerName {
+  customerName: string
+}
+
 export interface IAddressDetail {
   street: string
   city: string
@@ -9,8 +13,7 @@ export interface IAddress {
   business?: IAddressDetail
 }
 
-export interface ICustomer {
-  customerName: string
+export interface ICustomer extends ICustomerName {
   emailAddress: string
   name: string
   address: IAddress
@@ -26,4 +29,9 @@ export interface IOrderRequestBody {
 
 export interface IOrderRequest extends IOrderRequestBody {
   customerName: string
+}
+
+export interface IOrder extends IOrderRequestBody {
+  orderId: string
+  createdAt: string
 }

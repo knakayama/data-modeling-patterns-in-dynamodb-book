@@ -54,6 +54,19 @@ export class ApiConstruct extends Construct {
     })
     props.table.grantWriteData(placeOrder.lambdaFunction)
 
+    const listOrders = new LambdaFunction(this, 'listOrders', {
+      code: lambda.Code.asset(
+        path.join(__dirname, `${pathToDist}/list-orders`)
+      ),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.listOrders',
+      environment: {
+        APP_TABLE: props.table.tableName,
+        ALLOWED_ORIGIN: props.allowedOrigin,
+      },
+    })
+    props.table.grantReadData(listOrders.lambdaFunction)
+
     const api = new apigatewayv2.HttpApi(this, 'HttpApi', {
       corsPreflight: {
         allowCredentials: props.allowedOrigin === '*' ? false : true,
@@ -84,6 +97,14 @@ export class ApiConstruct extends Construct {
       methods: [apigatewayv2.HttpMethod.POST],
       integration: new apigatewayv2.LambdaProxyIntegration({
         handler: placeOrder.lambdaFunction,
+      }),
+    })
+
+    api.addRoutes({
+      path: '/customers/{customer}/orders',
+      methods: [apigatewayv2.HttpMethod.GET],
+      integration: new apigatewayv2.LambdaProxyIntegration({
+        handler: listOrders.lambdaFunction,
       }),
     })
 
