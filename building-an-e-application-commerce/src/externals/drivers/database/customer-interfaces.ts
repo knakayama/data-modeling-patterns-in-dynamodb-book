@@ -2,6 +2,10 @@ export interface ICustomerOrderRequest {
   customerName: string
 }
 
+export interface ICustomerOrderItemRequest extends ICustomerOrderRequest {
+  orderId: string
+}
+
 export interface IAddressDetail {
   street: string
   city: string
@@ -40,7 +44,14 @@ export interface IOrderRequest extends IOrderRequestBody {
   customerName: string
 }
 
-export interface IOrder extends IOrderRequestBody {
+export interface IOrderResponse {
   orderId: string
   createdAt: string
+  status: OrderStatus
+  amount: number
+  numberItems: number
+}
+
+export interface IOrderItemResponse extends IOrderResponse {
+  orderItems: IOrderItemRequest[]
 }

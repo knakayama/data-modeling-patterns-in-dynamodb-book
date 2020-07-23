@@ -1,10 +1,10 @@
 import { Stack, App, StackProps } from '@aws-cdk/core'
 import { ApiConstruct } from '@infrastructures/components/constructs/api'
-import * as dynamodb from '@aws-cdk/aws-dynamodb'
 import * as acm from '@aws-cdk/aws-certificatemanager'
+import { Table } from '@infrastructures/components/constructs/table'
 
 interface ApiStackProps extends StackProps {
-  table: dynamodb.Table
+  appTable: Table
   cert: acm.Certificate
   allowedOrigin: string
   domain: string
@@ -23,7 +23,7 @@ export class ApiStack extends Stack {
 
     this.api = new ApiConstruct(this, 'Api', {
       stageName: 'v1',
-      table: props.table,
+      appTable: props.appTable,
       allowedOrigin: props.allowedOrigin,
       cert: props.cert,
       domain: props.domain,

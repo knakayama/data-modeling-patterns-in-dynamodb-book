@@ -3,6 +3,7 @@ import * as dynamodb from '@aws-cdk/aws-dynamodb'
 
 export class Table extends Construct {
   readonly table: dynamodb.Table
+  readonly gsi1 = 'GSI1'
 
   constructor(readonly scope: Construct, readonly id: string) {
     super(scope, id)
@@ -21,7 +22,7 @@ export class Table extends Construct {
     })
 
     this.table.addGlobalSecondaryIndex({
-      indexName: 'GSI1',
+      indexName: this.gsi1,
       partitionKey: {
         name: 'GSI1PK',
         type: dynamodb.AttributeType.STRING,

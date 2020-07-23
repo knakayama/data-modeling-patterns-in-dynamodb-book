@@ -1,8 +1,8 @@
 import { Construct, Duration } from '@aws-cdk/core'
 import { LambdaFunction } from '@infrastructures/components/constructs/lambda-function'
+import { Table } from '@infrastructures/components/constructs/table'
 import * as path from 'path'
 import * as lambda from '@aws-cdk/aws-lambda'
-import * as dynamodb from '@aws-cdk/aws-dynamodb'
 import * as acm from '@aws-cdk/aws-certificatemanager'
 import * as apigatewayv2 from '@aws-cdk/aws-apigatewayv2'
 import * as apigateway from '@aws-cdk/aws-apigateway'
@@ -11,7 +11,7 @@ import * as apigateway from '@aws-cdk/aws-apigateway'
 
 interface DemoApi {
   stageName: string
-  table: dynamodb.Table
+  appTable: Table
   allowedOrigin: string
   cert: acm.Certificate
   domain: string
@@ -35,11 +35,11 @@ export class ApiConstruct extends Construct {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'index.createCustomer',
       environment: {
-        APP_TABLE: props.table.tableName,
+        APP_TABLE: props.appTable.table.tableName,
         ALLOWED_ORIGIN: props.allowedOrigin,
       },
     })
-    props.table.grantWriteData(customerCreation.lambdaFunction)
+    props.appTable.table.grantWriteData(customerCreation.lambdaFunction)
 
     const placeOrder = new LambdaFunction(this, 'placeOrder', {
       code: lambda.Code.asset(
@@ -48,11 +48,11 @@ export class ApiConstruct extends Construct {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'index.placeOrder',
       environment: {
-        APP_TABLE: props.table.tableName,
+        APP_TABLE: props.appTable.table.tableName,
         ALLOWED_ORIGIN: props.allowedOrigin,
       },
     })
-    props.table.grantWriteData(placeOrder.lambdaFunction)
+    props.appTable.table.grantWriteData(placeOrder.lambdaFunction)
 
     const listOrders = new LambdaFunction(this, 'listOrders', {
       code: lambda.Code.asset(
@@ -61,11 +61,25 @@ export class ApiConstruct extends Construct {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'index.listOrders',
       environment: {
-        APP_TABLE: props.table.tableName,
+        APP_TABLE: props.appTable.table.tableName,
         ALLOWED_ORIGIN: props.allowedOrigin,
       },
     })
-    props.table.grantReadData(listOrders.lambdaFunction)
+    props.appTable.table.grantReadData(listOrders.lambdaFunction)
+
+    const listOrderItems = new LambdaFunction(this, 'listOrderItems', {
+      code: lambda.Code.asset(
+        path.join(__dirname, `${pathToDist}/list-order-items`)
+      ),
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: 'index.listOrderItems',
+      environment: {
+        APP_TABLE: props.appTable.table.tableName,
+        ALLOWED_ORIGIN: props.allowedOrigin,
+        GSI1: props.appTable.gsi1,
+      },
+    })
+    props.appTable.table.grantReadData(listOrderItems.lambdaFunction)
 
     const api = new apigatewayv2.HttpApi(this, 'HttpApi', {
       corsPreflight: {
@@ -105,6 +119,14 @@ export class ApiConstruct extends Construct {
       methods: [apigatewayv2.HttpMethod.GET],
       integration: new apigatewayv2.LambdaProxyIntegration({
         handler: listOrders.lambdaFunction,
+      }),
+    })
+
+    api.addRoutes({
+      path: '/customers/{customerName}/orders/{orderId}',
+      methods: [apigatewayv2.HttpMethod.GET],
+      integration: new apigatewayv2.LambdaProxyIntegration({
+        handler: listOrderItems.lambdaFunction,
       }),
     })
 

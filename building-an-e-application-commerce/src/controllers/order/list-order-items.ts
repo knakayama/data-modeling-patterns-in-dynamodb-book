@@ -7,29 +7,34 @@ import {
   ApiHandler,
 } from '@presenters/interfaces'
 import { ResponseBuilder } from '@presenters/response-builder'
-import { OrderListingUseCase } from '@use-cases/order/list-orders'
+import { OrderItemListingUseCase } from '@use-cases/order/list-order-items'
 import { Logger } from '@modules/utils/logger'
 import { validateOrReject } from 'class-validator'
 import { plainToClass } from 'class-transformer'
-import { CustomerOrderRequest } from '@modules/validators/customer-order-request'
-import { IOrderResponse } from '@externals/drivers/database/customer-interfaces'
+import { CustomerOrderItemRequest } from '@modules/validators/customer-order-item-request'
+import { IOrderItemResponse } from '@externals/drivers/database/customer-interfaces'
 
-export class OrderListingController {
-  constructor(private readonly _orderListingUseCase: OrderListingUseCase) {}
+export class OrderItemListingController {
+  constructor(
+    private readonly _orderItemListingUseCase: OrderItemListingUseCase
+  ) {}
 
-  listOrders: ApiHandler = (
+  listOrderItems: ApiHandler = (
     event: ApiEvent,
     context: ApiContext,
     callback: ApiCallback
   ): void => {
-    const customerName = plainToClass(CustomerOrderRequest, {
+    const customerOrderItemRequest = plainToClass(CustomerOrderItemRequest, {
       customerName: event?.pathParameters?.customerName,
+      orderId: event?.pathParameters?.orderId,
     })
 
-    validateOrReject(customerName)
-      .then(() => this._orderListingUseCase.listOrders(customerName))
-      .then((orders: IOrderResponse[]) =>
-        ResponseBuilder.ok({ orders }, callback)
+    validateOrReject(customerOrderItemRequest)
+      .then(() =>
+        this._orderItemListingUseCase.listOrderItems(customerOrderItemRequest)
+      )
+      .then((orderItem: IOrderItemResponse) =>
+        ResponseBuilder.ok({ orderItem }, callback)
       )
       .catch((error) => {
         Logger.getLogger().error(error)
