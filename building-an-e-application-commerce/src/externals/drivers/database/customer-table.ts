@@ -1,10 +1,6 @@
-import { OrderRequest } from '@modules/validators/order-request'
 import { DatabaseDriverUtils } from '@externals/drivers/database/database-driver-utils'
 import { DynamoDB } from 'aws-sdk'
-import { IOrder } from '@externals/drivers/database/customer-interfaces'
-// https://www.typescriptlang.org/docs/handbook/modules.html#export--and-import--require
-import ksuid = require('ksuid')
-import * as dayjs from 'dayjs'
+import { IOrder, Item } from '@externals/drivers/database/customer-interfaces'
 import { CustomerName } from '@modules/validators/customer-name'
 
 export class CustomerDatabaseDriver {
@@ -21,31 +17,12 @@ export class CustomerDatabaseDriver {
       amount: v.Amount,
       numberItems: v.NumberItems,
       status: v.Status,
+      items: v.map((item: Item) => ({
+        itemId: item.itemId,
+        description: item.description,
+        price: item.price,
+      })),
     }
-  }
-  async placeOrder(orderRequest: OrderRequest): Promise<void> {
-    const date = dayjs()
-    const orderId = ksuid.randomSync().string
-    const param: DynamoDB.DocumentClient.PutItemInput = {
-      ConditionExpression:
-        'attribute_not_exists(#PK) AND attribute_not_exists(#SK)',
-      ExpressionAttributeNames: {
-        '#PK': 'PK',
-        '#SK': 'SK',
-      },
-      Item: {
-        PK: DatabaseDriverUtils.toCustomerPK(orderRequest.customerName),
-        SK: DatabaseDriverUtils.toOrderSK(orderId),
-        OrderId: orderId,
-        CreatedAt: date.toISOString(),
-        Amount: orderRequest.amount,
-        NumberItems: orderRequest.numberItems,
-        GSI1PK: DatabaseDriverUtils.toOrderPK(orderId),
-        GSI1SK: DatabaseDriverUtils.toOrderPK(orderId),
-      },
-      TableName: process.env.APP_TABLE!,
-    }
-    await this._dynamoDBD.put(param).promise()
   }
 
   async findOrdersByCustomerName(

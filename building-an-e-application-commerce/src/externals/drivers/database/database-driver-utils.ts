@@ -14,4 +14,12 @@ export class DatabaseDriverUtils {
   static toOrderPK(orderId: string): string {
     return `ORDER#${orderId}`
   }
+
+  static toOrderItemPK(orderId: string, itemId: string): string {
+    return `ORDER#${orderId}#ITEM#${itemId}`
+  }
+
+  static toItemPK(itemId: string): string {
+    return `ITEM#${itemId}`
+  }
 }

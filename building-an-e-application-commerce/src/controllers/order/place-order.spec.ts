@@ -11,14 +11,14 @@ import { ApiResponseParsed, PathParameters } from '@test/utils/interfaces'
 import { OrderPlacementUseCase } from '@use-cases/order/place-order'
 import { Chance } from 'chance'
 import { RequestUtils } from '@test/utils/request-utils'
-import { CustomerDatabaseDriver } from '@externals/drivers/database/customer-table'
+import { OrderAndItemTransactionDriver } from '@externals/drivers/database/order-and-item-transaction'
 import { IOrderRequestBody } from '@externals/drivers/database/customer-interfaces'
 
 const chance = new Chance.Chance()
 
 describe('OrderPlacementController', () => {
   const orderPlacementUseCase = new OrderPlacementUseCase(
-    new CustomerDatabaseDriver()
+    new OrderAndItemTransactionDriver()
   )
   const orderPlacementController = new OrderPlacementController(
     orderPlacementUseCase
@@ -237,6 +237,136 @@ describe('OrderPlacementController', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         requestBody.numberItems = 'invalid-amount!'
+
+        await callAndCheckError(
+          orderPlacementController.placeOrder,
+          HttpStatusCodes.BadRequest,
+          ErrorCodes.BadRequest,
+          requestBody,
+          pathParameters
+        )
+      })
+    })
+
+    describe('When items is missing', () => {
+      test('should return Bad Request', async () => {
+        const pathParameters: PathParameters = {
+          customer: RequestUtils.generateCustomerName(),
+        }
+        const requestBody = RequestUtils.generateOrderRequestBody()
+        delete requestBody.items
+
+        await callAndCheckError(
+          orderPlacementController.placeOrder,
+          HttpStatusCodes.BadRequest,
+          ErrorCodes.BadRequest,
+          requestBody,
+          pathParameters
+        )
+      })
+    })
+
+    describe('When item id is missing', () => {
+      test('should return Bad Request', async () => {
+        const pathParameters: PathParameters = {
+          customer: RequestUtils.generateCustomerName(),
+        }
+        const requestBody = RequestUtils.generateOrderRequestBody()
+        delete requestBody.items[0].itemId
+
+        await callAndCheckError(
+          orderPlacementController.placeOrder,
+          HttpStatusCodes.BadRequest,
+          ErrorCodes.BadRequest,
+          requestBody,
+          pathParameters
+        )
+      })
+    })
+
+    describe('When description is missing', () => {
+      test('should return Bad Request', async () => {
+        const pathParameters: PathParameters = {
+          customer: RequestUtils.generateCustomerName(),
+        }
+        const requestBody = RequestUtils.generateOrderRequestBody()
+        delete requestBody.items[0].description
+
+        await callAndCheckError(
+          orderPlacementController.placeOrder,
+          HttpStatusCodes.BadRequest,
+          ErrorCodes.BadRequest,
+          requestBody,
+          pathParameters
+        )
+      })
+    })
+
+    describe('When price is missing', () => {
+      test('should return Bad Request', async () => {
+        const pathParameters: PathParameters = {
+          customer: RequestUtils.generateCustomerName(),
+        }
+        const requestBody = RequestUtils.generateOrderRequestBody()
+        delete requestBody.items[0].price
+
+        await callAndCheckError(
+          orderPlacementController.placeOrder,
+          HttpStatusCodes.BadRequest,
+          ErrorCodes.BadRequest,
+          requestBody,
+          pathParameters
+        )
+      })
+    })
+
+    describe('When item id is invalid', () => {
+      test('should return Bad Request', async () => {
+        const pathParameters: PathParameters = {
+          customer: RequestUtils.generateCustomerName(),
+        }
+        const requestBody = RequestUtils.generateOrderRequestBody()
+        requestBody.items[0].itemId = 'invalid-item-id!'
+
+        await callAndCheckError(
+          orderPlacementController.placeOrder,
+          HttpStatusCodes.BadRequest,
+          ErrorCodes.BadRequest,
+          requestBody,
+          pathParameters
+        )
+      })
+    })
+
+    describe('When description is invalid', () => {
+      test('should return Bad Request', async () => {
+        const pathParameters: PathParameters = {
+          customer: RequestUtils.generateCustomerName(),
+        }
+        const requestBody = RequestUtils.generateOrderRequestBody()
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        requestBody.items[0].description = 1
+
+        await callAndCheckError(
+          orderPlacementController.placeOrder,
+          HttpStatusCodes.BadRequest,
+          ErrorCodes.BadRequest,
+          requestBody,
+          pathParameters
+        )
+      })
+    })
+
+    describe('When description is invalid', () => {
+      test('should return Bad Request', async () => {
+        const pathParameters: PathParameters = {
+          customer: RequestUtils.generateCustomerName(),
+        }
+        const requestBody = RequestUtils.generateOrderRequestBody()
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        requestBody.items[0].price = 'invalid-price!'
 
         await callAndCheckError(
           orderPlacementController.placeOrder,

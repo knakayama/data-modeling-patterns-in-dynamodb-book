@@ -1,6 +1,15 @@
-import { Matches, IsIn, IsNumber } from 'class-validator'
+import {
+  Matches,
+  IsIn,
+  IsNumber,
+  ValidateNested,
+  IsDefined,
+} from 'class-validator'
 import { IOrderRequest } from '@externals/drivers/database/customer-interfaces'
 import { OrderStatus } from '@externals/drivers/database/customer-interfaces'
+import { Type } from 'class-transformer'
+import { ItemRequest } from '@modules/validators/item-request'
+import 'reflect-metadata'
 
 export class OrderRequest implements IOrderRequest {
   @Matches(/^[a-z0-9]+$/i, {
@@ -18,4 +27,9 @@ export class OrderRequest implements IOrderRequest {
 
   @IsNumber({}, { message: 'Please specify number items!' })
   numberItems!: number
+
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => ItemRequest)
+  items!: ItemRequest[]
 }

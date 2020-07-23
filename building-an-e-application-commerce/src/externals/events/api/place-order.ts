@@ -1,10 +1,12 @@
 import { OrderPlacementController } from '@controllers/order/place-order'
 import { OrderPlacementUseCase } from '@use-cases/order/place-order'
-import { CustomerDatabaseDriver } from '@externals/drivers/database/customer-table'
+import { OrderAndItemTransactionDriver } from '@externals/drivers/database/order-and-item-transaction'
 import { ApiInterceptor } from '@middlewares/api/interceptor'
 
-const customerDatabaseDriver = new CustomerDatabaseDriver()
-const orderPlacementUseCase = new OrderPlacementUseCase(customerDatabaseDriver)
+const orderAndItemTransactionDriver = new OrderAndItemTransactionDriver()
+const orderPlacementUseCase = new OrderPlacementUseCase(
+  orderAndItemTransactionDriver
+)
 const orderPlacementController = new OrderPlacementController(
   orderPlacementUseCase
 )

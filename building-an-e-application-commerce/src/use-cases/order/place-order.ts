@@ -1,17 +1,17 @@
 import { ErrorCodes } from '@presenters/error-codes'
 import { InternalServerErrorResult } from '@presenters/errors'
-import { CustomerDatabaseDriver } from '@externals/drivers/database/customer-table'
+import { OrderAndItemTransactionDriver } from '@externals/drivers/database/order-and-item-transaction'
 import { Logger } from '@modules/utils/logger'
 import { OrderRequest } from '@modules/validators/order-request'
 
 export class OrderPlacementUseCase {
   constructor(
-    private readonly _customerDatabaseDriver: CustomerDatabaseDriver
+    private readonly _orderAndItemTransactionDriver: OrderAndItemTransactionDriver
   ) {}
 
   async placeOrder(orderRequest: OrderRequest): Promise<void> {
     try {
-      await this._customerDatabaseDriver.placeOrder(orderRequest)
+      await this._orderAndItemTransactionDriver.placeOrder(orderRequest)
     } catch (error) {
       Logger.getLogger().error(error)
       throw new InternalServerErrorResult(
