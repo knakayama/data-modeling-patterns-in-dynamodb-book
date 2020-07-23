@@ -4,7 +4,7 @@ import {
   IOrder,
   OrderItem,
 } from '@externals/drivers/database/customer-interfaces'
-import { CustomerName } from '@modules/validators/customer-name'
+import { CustomerOrderRequest } from '@modules/validators/customer-order-request'
 
 export class CustomerDatabaseDriver {
   constructor(
@@ -29,7 +29,7 @@ export class CustomerDatabaseDriver {
   }
 
   async findOrdersByCustomerName(
-    customerName: CustomerName
+    customerName: CustomerOrderRequest
   ): Promise<IOrder[]> {
     const param: DynamoDB.DocumentClient.QueryInput = {
       TableName: process.env.APP_TABLE!,

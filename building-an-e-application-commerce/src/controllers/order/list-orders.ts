@@ -11,7 +11,7 @@ import { OrderListingUseCase } from '@use-cases/order/list-orders'
 import { Logger } from '@modules/utils/logger'
 import { validateOrReject } from 'class-validator'
 import { plainToClass } from 'class-transformer'
-import { CustomerName } from '@modules/validators/customer-name'
+import { CustomerOrderRequest } from '@modules/validators/customer-order-request'
 import { IOrder } from '@externals/drivers/database/customer-interfaces'
 
 interface IOrderResponse {
@@ -26,7 +26,7 @@ export class OrderListingController {
     context: ApiContext,
     callback: ApiCallback
   ): void => {
-    const customerName = plainToClass(CustomerName, {
+    const customerName = plainToClass(CustomerOrderRequest, {
       customerName: event?.pathParameters?.customer,
     })
 

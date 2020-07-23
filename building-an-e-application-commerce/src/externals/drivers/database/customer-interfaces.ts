@@ -1,4 +1,4 @@
-export interface ICustomerName {
+export interface ICustomerOrderRequest {
   customerName: string
 }
 
@@ -13,7 +13,7 @@ export interface IAddress {
   business?: IAddressDetail
 }
 
-export interface ICustomer extends ICustomerName {
+export interface ICustomer extends ICustomerOrderRequest {
   emailAddress: string
   name: string
   address: IAddress
