@@ -5,7 +5,7 @@ import {
   OrderStatus,
   IOrderRequestBody,
 } from '@externals/drivers/database/customer-interfaces'
-import { ItemRequest } from '@modules/validators/item-request'
+import { OrderItemRequest } from '@modules/validators/order-item-request'
 import { v4 as uuidv4 } from 'uuid'
 
 const chance: Chance.Chance = new Chance()
@@ -60,7 +60,7 @@ export class RequestUtils {
     }
   }
 
-  static generateItemRequest(): ItemRequest {
+  static generateItemRequest(): OrderItemRequest {
     return {
       description: chance.paragraph(),
       itemId: uuidv4(),
@@ -68,8 +68,8 @@ export class RequestUtils {
     }
   }
 
-  static generateItemRequests(itemCount: number): ItemRequest[] {
-    const items: ItemRequest[] = []
+  static generateOrderItemRequests(itemCount: number): OrderItemRequest[] {
+    const items: OrderItemRequest[] = []
     for (let i: number = itemCount; i > 0; i -= 1) {
       items.push(this.generateItemRequest())
     }
@@ -81,7 +81,7 @@ export class RequestUtils {
       status: this.generateStatus(),
       amount: chance.integer(),
       numberItems: chance.integer(),
-      items: this.generateItemRequests(itemCount),
+      orderItems: this.generateOrderItemRequests(itemCount),
     }
   }
 }

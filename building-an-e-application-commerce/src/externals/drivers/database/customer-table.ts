@@ -1,6 +1,9 @@
 import { DatabaseDriverUtils } from '@externals/drivers/database/database-driver-utils'
 import { DynamoDB } from 'aws-sdk'
-import { IOrder, Item } from '@externals/drivers/database/customer-interfaces'
+import {
+  IOrder,
+  OrderItem,
+} from '@externals/drivers/database/customer-interfaces'
 import { CustomerName } from '@modules/validators/customer-name'
 
 export class CustomerDatabaseDriver {
@@ -17,7 +20,7 @@ export class CustomerDatabaseDriver {
       amount: v.Amount,
       numberItems: v.NumberItems,
       status: v.Status,
-      items: v.map((item: Item) => ({
+      orderItems: v.map((item: OrderItem) => ({
         itemId: item.itemId,
         description: item.description,
         price: item.price,

@@ -254,7 +254,7 @@ describe('OrderPlacementController', () => {
           customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
-        delete requestBody.items
+        delete requestBody.orderItems
 
         await callAndCheckError(
           orderPlacementController.placeOrder,
@@ -272,7 +272,7 @@ describe('OrderPlacementController', () => {
           customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
-        delete requestBody.items[0].itemId
+        delete requestBody.orderItems[0].itemId
 
         await callAndCheckError(
           orderPlacementController.placeOrder,
@@ -290,7 +290,7 @@ describe('OrderPlacementController', () => {
           customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
-        delete requestBody.items[0].description
+        delete requestBody.orderItems[0].description
 
         await callAndCheckError(
           orderPlacementController.placeOrder,
@@ -308,7 +308,7 @@ describe('OrderPlacementController', () => {
           customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
-        delete requestBody.items[0].price
+        delete requestBody.orderItems[0].price
 
         await callAndCheckError(
           orderPlacementController.placeOrder,
@@ -326,7 +326,7 @@ describe('OrderPlacementController', () => {
           customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
-        requestBody.items[0].itemId = 'invalid-item-id!'
+        requestBody.orderItems[0].itemId = 'invalid-item-id!'
 
         await callAndCheckError(
           orderPlacementController.placeOrder,
@@ -346,7 +346,7 @@ describe('OrderPlacementController', () => {
         const requestBody = RequestUtils.generateOrderRequestBody()
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        requestBody.items[0].description = 1
+        requestBody.orderItems[0].description = 1
 
         await callAndCheckError(
           orderPlacementController.placeOrder,
@@ -366,7 +366,7 @@ describe('OrderPlacementController', () => {
         const requestBody = RequestUtils.generateOrderRequestBody()
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        requestBody.items[0].price = 'invalid-price!'
+        requestBody.orderItems[0].price = 'invalid-price!'
 
         await callAndCheckError(
           orderPlacementController.placeOrder,

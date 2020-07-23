@@ -8,7 +8,7 @@ import {
 import { IOrderRequest } from '@externals/drivers/database/customer-interfaces'
 import { OrderStatus } from '@externals/drivers/database/customer-interfaces'
 import { Type } from 'class-transformer'
-import { ItemRequest } from '@modules/validators/item-request'
+import { OrderItemRequest } from '@modules/validators/order-item-request'
 import 'reflect-metadata'
 
 export class OrderRequest implements IOrderRequest {
@@ -30,6 +30,6 @@ export class OrderRequest implements IOrderRequest {
 
   @IsDefined()
   @ValidateNested()
-  @Type(() => ItemRequest)
-  items!: ItemRequest[]
+  @Type(() => OrderItemRequest)
+  orderItems!: OrderItemRequest[]
 }

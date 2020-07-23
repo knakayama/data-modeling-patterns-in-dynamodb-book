@@ -21,19 +21,19 @@ export interface ICustomer extends ICustomerName {
 
 export type OrderStatus = 'SHIPPED' | 'CANCELED' | 'PROCESSING'
 
-export interface IItemRequest {
+export interface IOrderItemRequest {
   itemId: string
   description: string
   price: number
 }
 
-export type Item = IItemRequest
+export type OrderItem = IOrderItemRequest
 
 export interface IOrderRequestBody {
   status: OrderStatus
   amount: number
   numberItems: number
-  items: IItemRequest[]
+  orderItems: IOrderItemRequest[]
 }
 
 export interface IOrderRequest extends IOrderRequestBody {

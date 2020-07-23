@@ -1,8 +1,8 @@
 import { IsNumber, IsUUID, IsString } from 'class-validator'
-import { IItemRequest } from '@externals/drivers/database/customer-interfaces'
+import { IOrderItemRequest } from '@externals/drivers/database/customer-interfaces'
 import 'reflect-metadata'
 
-export class ItemRequest implements IItemRequest {
+export class OrderItemRequest implements IOrderItemRequest {
   @IsUUID('4', { message: 'Please specify a valid item id!' })
   itemId!: string
 

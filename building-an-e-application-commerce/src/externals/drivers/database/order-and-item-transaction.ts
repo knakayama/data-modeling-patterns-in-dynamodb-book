@@ -38,7 +38,7 @@ export class OrderAndItemTransactionDriver {
         },
       },
     ]
-    orderRequest.items.forEach((item) => {
+    orderRequest.orderItems.forEach((item) => {
       transactItems.push({
         Put: {
           ConditionExpression:
