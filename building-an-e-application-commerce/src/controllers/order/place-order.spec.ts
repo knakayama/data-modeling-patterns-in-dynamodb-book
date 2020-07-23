@@ -46,7 +46,7 @@ describe('OrderPlacementController', () => {
     describe('When there is no request body', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = {} as IOrderRequestBody
 
@@ -95,7 +95,7 @@ describe('OrderPlacementController', () => {
     describe('When amount is missing', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         delete requestBody.amount
@@ -113,7 +113,7 @@ describe('OrderPlacementController', () => {
     describe('When status is missing', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         delete requestBody.status
@@ -131,7 +131,7 @@ describe('OrderPlacementController', () => {
     describe('When number items is missing', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         delete requestBody.numberItems
@@ -149,7 +149,7 @@ describe('OrderPlacementController', () => {
     describe('Unexpected internal situations', () => {
       test('should return Internal Server Error', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         jest
@@ -174,7 +174,7 @@ describe('OrderPlacementController', () => {
     describe('When a customer name is not valid', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: 'invalid-customer-name!',
+          customerName: 'invalid-customer-name!',
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
 
@@ -191,7 +191,7 @@ describe('OrderPlacementController', () => {
     describe('When status is not valid', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -211,7 +211,7 @@ describe('OrderPlacementController', () => {
     describe('When amount is not valid', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -231,7 +231,7 @@ describe('OrderPlacementController', () => {
     describe('When number items is not valid', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -251,7 +251,7 @@ describe('OrderPlacementController', () => {
     describe('When items is missing', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         delete requestBody.items
@@ -269,7 +269,7 @@ describe('OrderPlacementController', () => {
     describe('When item id is missing', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         delete requestBody.items[0].itemId
@@ -287,7 +287,7 @@ describe('OrderPlacementController', () => {
     describe('When description is missing', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         delete requestBody.items[0].description
@@ -305,7 +305,7 @@ describe('OrderPlacementController', () => {
     describe('When price is missing', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         delete requestBody.items[0].price
@@ -323,7 +323,7 @@ describe('OrderPlacementController', () => {
     describe('When item id is invalid', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         requestBody.items[0].itemId = 'invalid-item-id!'
@@ -341,7 +341,7 @@ describe('OrderPlacementController', () => {
     describe('When description is invalid', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -361,7 +361,7 @@ describe('OrderPlacementController', () => {
     describe('When description is invalid', () => {
       test('should return Bad Request', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -381,7 +381,7 @@ describe('OrderPlacementController', () => {
     describe('When it suceeds', () => {
       test('should return 202', async () => {
         const pathParameters: PathParameters = {
-          customer: RequestUtils.generateCustomerName(),
+          customerName: RequestUtils.generateCustomerName(),
         }
         const requestBody = RequestUtils.generateOrderRequestBody()
         jest.spyOn(orderPlacementUseCase, 'placeOrder').mockResolvedValue()

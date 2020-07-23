@@ -93,7 +93,7 @@ export class ApiConstruct extends Construct {
     })
 
     api.addRoutes({
-      path: '/customers/{customer}/orders',
+      path: '/customers/{customerName}/orders',
       methods: [apigatewayv2.HttpMethod.POST],
       integration: new apigatewayv2.LambdaProxyIntegration({
         handler: placeOrder.lambdaFunction,
@@ -101,7 +101,7 @@ export class ApiConstruct extends Construct {
     })
 
     api.addRoutes({
-      path: '/customers/{customer}/orders',
+      path: '/customers/{customerName}/orders',
       methods: [apigatewayv2.HttpMethod.GET],
       integration: new apigatewayv2.LambdaProxyIntegration({
         handler: listOrders.lambdaFunction,
